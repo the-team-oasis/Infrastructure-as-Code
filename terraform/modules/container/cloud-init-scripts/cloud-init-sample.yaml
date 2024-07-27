@@ -1,0 +1,75 @@
+#cloud-config
+  
+write_files:
+- path: /etc/.firstboot_disable_reboot
+  owner: root:root
+  permissions: '0644'
+  encoding: b64
+  content: |
+    dGhpcyBjb250ZW50IHBsYWNlZCBieSBjbG91ZC1pbml0Cg==
+  
+- path: /root/docker_login.sh
+  owner: root:root
+  permissions: '0755'
+  encoding: b64
+  content: |
+    IyEvYmluL2Jhc2gKc2V0IC1lCnNldCAtbyBwaXBlZmFpbAoKY3JlZF9oZWxwZXJfY2FsbCgpIHsKICAgIG9jaXJfdXJsPSQxCiAgICB0b2tlbl9zdHI9JChlY2hvICIkb2Npcl91cmwiIHwgZG9ja2VyLWNyZWRlbnRpYWwtb2NpciBnZXQgfCBqcSAtciAuU2VjcmV0KQp9CgpvY2lyX2xvZ2luICgpIHsKICAgIG9jaXJfdXJsPSQxCiAgICBpZiBbICEgLXMgL3Zhci9saWIva3ViZWxldC9jb25maWcuanNvbiBdOyB0aGVuCiAgICAgICAgZWNobyAiY29uZmlnLmpzb24gZmlsZSBub3QgZm91bmQuIHBvcHVsYXRpbmcgaXQiCiAgICAgICAgZWNobyAneyJhdXRocyI6IHt9fScgPiAvdmFyL2xpYi9rdWJlbGV0L2NvbmZpZy5qc29uCiAgICBmaQogICAgZWNobyAiTG9nZ2luZyBpbnRvICRvY2lyX3VybCIKCiAgICBtYXhfdHJpZXM9MgogICAgY291bnQ9MAogICAgd2hpbGUgWyAgJGNvdW50IC1sdCAkbWF4X3RyaWVzIF07IGRvCiAgICAgICAgY3JlZF9oZWxwZXJfY2FsbCAiJG9jaXJfdXJsIiAmJiBicmVhawogICAgICAgIGVjaG8gInJldHJ5aW5nIHRva2VuIGNhbGwgdG8gb2NpciIKICAgICAgICBsZXQgY291bnQ9Y291bnQrMQogICAgZG9uZQoKICAgIGlmIFsgIiRjb3VudCIgLWdlICRtYXhfdHJpZXMgXTt0aGVuCiAgICAgICAgZWNobyAiY2FsbCB0byBjcmVkIGhlbHBlciBmYWlsZWQiCiAgICAgICAgcmV0dXJuIDEKICAgIGZpCiAgICBlY2hvICJyZWNlaXZlZCB0b2tlbiBmcm9tIG9jaXIiCgogICAgb3V0cHV0X3N0cj0kKGVjaG8gLW4gQkVBUkVSX1RPS0VOOiR0b2tlbl9zdHIgfCBiYXNlNjQgLXcgMCkKICAgIHVybF9hdXRoX2pzb249InsgXCJhdXRoXCI6IFwiJG91dHB1dF9zdHJcIn0iCgogICAgY29uZmlnPSQoY2F0IC92YXIvbGliL2t1YmVsZXQvY29uZmlnLmpzb24gfCBqcSAtLWFyZyBvY2lyX3VybCAiJG9jaXJfdXJsIiAtLWFyZ2pzb24gdXJsX2F1dGhfanNvbiAiJHVybF9hdXRoX2pzb24iICcuYXV0aHMgKz0geygkb2Npcl91cmwpOiAkdXJsX2F1dGhfanNvbiB9JykKICAgIGVjaG8gIiRjb25maWciID4gL3Zhci9saWIva3ViZWxldC9jb25maWcuanNvbgogICAgIyB0cnkgdG8gd3JpdGUgdG8gZG9ja2VyIGZvciBiYWNrd2FyZHMgY29tcGF0aWJpbGl0eQogICAgZWNobyAiJGNvbmZpZyIgPiAvcm9vdC8uZG9ja2VyL2NvbmZpZy5qc29uIHx8IHRydWUKfQoKaW5zdGFuY2VNZXRhZGF0YT0kKGN1cmwgLUwgLUggJ0F1dGhvcml6YXRpb246IEJlYXJlciBPcmFjbGUnIGh0dHA6Ly8xNjkuMjU0LjE2OS4yNTQvb3BjL3YyL2luc3RhbmNlL3JlZ2lvbkluZm8pCnJlYWxtPSQoZWNobyAkaW5zdGFuY2VNZXRhZGF0YSB8IGpxIC1yICcucmVhbG1LZXknKQpkb21haW49JChlY2hvICRpbnN0YW5jZU1ldGFkYXRhIHwganEgLXIgJy5yZWFsbURvbWFpbkNvbXBvbmVudCcpCnJlZ2lvbk5hbWU9JChlY2hvICRpbnN0YW5jZU1ldGFkYXRhIHwganEgLXIgJy5yZWdpb25JZGVudGlmaWVyJykKcmVnaW9uQ29kZT0kKGVjaG8gJGluc3RhbmNlTWV0YWRhdGEgfCBqcSAtciAnLnJlZ2lvbktleScgfCB0ciAnWzp1cHBlcjpdJyAnWzpsb3dlcjpdJykKaWYgWyAkcmVhbG0gPSAib2MxIiBdOyB0aGVuCiAgICAjIHdlIG5lZWQgdG8gbG9nIGludG8gdGhlIGFpcnBvcnQgY29kZSBhbmQgdGhlIGxvbmcgbmFtZQogICAgIyBmb3IgYmFja3dhcmRzIGNvbXBhdGliaWxpdHkgcmVhc29ucwogICAgb2Npcl9sb2dpbiAiJHJlZ2lvbk5hbWUub2Npci5pbyIKICAgIG9jaXJfbG9naW4gIiRyZWdpb25Db2RlLm9jaXIuaW8iCmVsc2UKICAgIG9jaXJfbG9naW4gIm9jaXIuJHJlZ2lvbk5hbWUub2NpLiRkb21haW4iCmZpCmVjaG8gRmluaXNoZWQgRG9ja2VyIENyZWRlbnRpYWwgSGVscGVyIFRva2VuIEdldCBQcm92aXNpb25pbmc=
+ 
+  
+- path: /var/run/docker-credential-helper-init.sh
+  owner: root:root
+  permissions: '0755'
+  encoding: b64
+  content: |
+    IyEvYmluL2Jhc2gKCmZ1bmN0aW9uIGRpZSB7IGVjaG8gIiR7QH0iIDE+JjIgOyBleGl0IDI7IH0KCnNldCAtZXhvIHBpcGVmYWlsCgp3aGlsZSBbIC1mIC9yb290L2ZpcnN0Ym9vdC5zaCBdIDsgZG8KICAgIGVjaG8gIldhaXRpbmcgb24gZmlyc3Rib290IHRvIGNvbXBsZXRlIgogICAgc2xlZXAgMQpkb25lCgojIGFuZCBjaGVjayB0aGF0IGl0IGF0IGxlYXN0IGxlZnQgdGhlIHl1bSByZXBvcyBpbiBhIGdvb2Qgc3RhdGUKaWYgWyAteiAiJCh5dW0gbGlzdCAtLXF1aWV0IGFuc2libGUgMj4vZGV2L251bGwpIiBdIDsgdGhlbgogICAgZGllICJmaXJzdGJvb3QgZmFpbGVkIHRvIHByb3Blcmx5IGNvbmZpZ3VyZSB5dW0iCmZpCgp5dW0gaW5zdGFsbCAteSBqYXZhLTEuOC4wLW9wZW5qZGsKeXVtIGluc3RhbGwgLXkgZG9ja2VyLWNyZWRlbnRpYWwtb2NpcgoKbWtkaXIgLXAgL3Zhci9saWIva3ViZWxldApta2RpciAtcCAvcm9vdC8uZG9ja2VyCmxuIC1zZiAvdmFyL2xpYi9rdWJlbGV0L2NvbmZpZy5qc29uIC9yb290Ly5kb2NrZXIvY29uZmlnLmpzb24KL3Jvb3QvZG9ja2VyX2xvZ2luLnNoIHx8IHsgZWNobyBkb2NrZXIgbG9naW4gZmFpbGVkIDsgZXhpdCAxOyB9Cg==
+  
+- owner: root:root
+  path: /etc/cron.d/docker-cred-helper
+  content: |
+    */20 * * * * root sleep $(( $RANDOM \% 1000 )); /root/docker_login.sh
+    @reboot /root/docker_login.sh
+  
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
+  
+runcmd:
+- |
+  #!/bin/bash
+  set -e
+  set -o pipefail
+    
+  ### insert customer pre oke-init.sh hook
+    
+  # Ensures chef doesn't fight with OKE when we enable selinux in regions w/o Chef support.
+  # Chef has a bug that will cause it to not run if it thinks it needs to disable selinux.
+  touch /etc/selinux.enabled
+  echo "Disabling Swap Volumes"
+  swapon --summary
+  swapoff --all
+  sed -i.old '/swap/ s/^\(.*\)$/# \1/g' /etc/fstab
+  swapon --summary
+  cat /etc/fstab
+  echo "Swap Volumes Disabled"
+  ### start OKE Provisioning
+  echo Starting OKE Provisioning
+  curl --fail -L0 -H "Authorization: Bearer Oracle" http://169.254.169.254/opc/v2/instance/metadata/oke_init_script | base64 --decode >/var/run/oke-init.sh
+  # workaround for IO images.
+  # https://jira-sd.mc1.oracleiaas.com/browse/CIO-311?focusedCommentId=9549417&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-9549417
+  sed -i "/tar -xzvf - -C \/var\/run\/tkw/a\sed -i \"/name: https:\\\/\\\/objectstorage/a\ \\\ \\\ \\\ \\\ \\\ \\\ disablerepo: '*epel*'\" /var/run/tkw/roles/tkm-minion/tasks/main.yml" /var/run/oke-init.sh
+  until bash -x /var/run/oke-init.sh
+  do
+      echo "oke-init failed... Trying again in 30s..."
+      sleep 30
+  done
+  echo Finished OKE Provisioning
+    
+    
+  until bash -x /var/run/docker-credential-helper-init.sh
+  do
+      echo "docker-credential-helper-init failed... Trying again in 30s..."
+      sleep 30
+  done
+  echo Finished Docker Credential Helper Provisioning
+    
+  systemctl restart kubelet
+    
+  ### insert customer post oke-init.sh hook

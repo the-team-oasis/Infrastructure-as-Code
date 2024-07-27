@@ -1,0 +1,49 @@
+#cloud-config
+
+write_files:
+- path: /tmp/index.html
+  permissions: '0644'
+  content: |
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>....</head>
+    <body>......</body>
+    </html>
+
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
+  
+runcmd:
+- |
+  #!/bin/bash
+  set -e
+  set -o pipefail
+  
+  ### insert customer pre oke-init.sh hook
+  
+  # Ensures chef doesn't fight with OKE when we enable selinux in regions w/o Chef support.
+  # Chef has a bug that will cause it to not run if it thinks it needs to disable selinux.
+  touch /etc/selinux.enabled
+  echo "Disabling Swap Volumes"
+  swapon --summary
+  swapoff --all
+  sed -i.old '/swap/ s/^\(.*\)$/# \1/g' /etc/fstab
+  swapon --summary
+  cat /etc/fstab
+  echo "Swap Volumes Disabled"
+  ### start OKE Provisioning
+  echo Starting OKE Provisioning
+  curl --fail -L0 -H "Authorization: Bearer Oracle" http://169.254.169.254/opc/v2/instance/metadata/oke_init_script | base64 --decode >/var/run/oke-init.sh
+  # workaround for IO images.
+  # https://jira-sd.mc1.oracleiaas.com/browse/CIO-311?focusedCommentId=9549417&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-9549417
+  sed -i "/tar -xzvf - -C \/var\/run\/tkw/a\sed -i \"/name: https:\\\/\\\/objectstorage/a\ \\\ \\\ \\\ \\\ \\\ \\\ disablerepo: '*epel*'\" /var/run/tkw/roles/tkm-minion/tasks/main.yml" /var/run/oke-init.sh
+  until bash -x /var/run/oke-init.sh
+  do
+      echo "oke-init failed... Trying again in 30s..."
+      sleep 30
+  done
+  echo Finished OKE Provisioning
+  systemctl restart kubelet
+
+  ### insert customer post oke-init.sh hook
+  mv /tmp/index.html /home/opc/index.html
+  chown opc:opc /home/opc/index.html

@@ -102,12 +102,11 @@ module "container" {
 
 module "functions" {
   source = "./modules/functions"
-  compartment_ocid = var.compartment_ocid
-  # compartment_ocid   = module.compartment.compartment_id
-  public_subnet_ocid = module.vcn.public_subnet_ocid
-  name_prefix        = var.name_prefix
-  freeform_tags      = var.freeform_tags
-  functions          = var.functions
+  compartment_ocid      = var.compartment_ocid
+  # compartment_ocid    = module.compartment.compartment_id
+  public_subnet_ocid    = module.vcn.public_subnet_ocid
+  name_prefix           = var.name_prefix
+  freeform_tags         = var.freeform_tags
 }
 
 # module "policy" {

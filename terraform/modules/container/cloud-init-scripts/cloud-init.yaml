@@ -1,0 +1,39 @@
+#cloud-config
+
+write_files:
+- path: /home/opc/index.html
+  permissions: '0644'
+  content: |
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>....</head>
+    <body>......</body>
+    </html>
+
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
+  
+runcmd:
+- |
+  #!/bin/bash
+  set -e
+  set -o pipefail
+  
+  ### oke-init.sh hook 실행 전 사용자 스크립트
+  echo "oke-init.sh hook 실행 전 스크립트" >> /home/opc/user-script-pre-oke-init-hook.txt
+  chown opc:opc /home/opc/user-script-pre-oke-init-hook.txt
+
+  # oke-init.sh hook 시작
+  echo Starting OKE Provisioning
+  curl --fail -L0 -H "Authorization: Bearer Oracle" http://169.254.169.254/opc/v2/instance/metadata/oke_init_script | base64 --decode >/var/run/oke-init.sh
+  
+  # 실패시에 30초후 다시 실행
+  until bash -x /var/run/oke-init.sh
+  do
+      echo "oke-init failed... Trying again in 30s..."
+      sleep 30
+  done
+  echo Finished OKE Provisioning
+  # oke-init.sh hook 종료
+
+  ### oke-init.sh hook 실행 후 사용자 스크립트
+  chown opc:opc /home/opc/index.html

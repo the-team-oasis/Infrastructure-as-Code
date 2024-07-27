@@ -6,17 +6,14 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "compartment_ocid" {}
-variable "region" {
-  default = "ap-melbourne-1"
-}
+variable "region" {}
 variable "home_region" {}
 variable "ssh_public_key" {}
 variable "availability_domain" {
   default = 1
 }
-variable "name_prefix" {
-  default = "myocitf"
-}
+variable "name_prefix" {}
+
 variable "freeform_tags" {
   type = map(string)
 
@@ -77,17 +74,15 @@ variable "container" {
     "node_pool_node_shape_config_ocpus" = 1
     "node_pool_node_source_details_boot_volume_size_in_gbs" = 50
     "num_nodes"                       = 1
-    "kubecfg_expiration"              = 10
     "kubecfg_token_version"           = "2.0.0"
   }
 }
 
-# for container module
+# for functions module
 variable "functions" {
   type = map(string)
 
   default = {
-    "application_display_name"         = "nodeapp"
     "function_display_name"            = "hello-nodejs"
     "function_memory_in_mbs"           = 128
     "function_timeout_in_seconds"      = 120

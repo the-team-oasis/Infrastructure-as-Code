@@ -7,20 +7,20 @@ resource "oci_containerengine_cluster" "cluster" {
   kubernetes_version = element(sort(data.oci_containerengine_cluster_option.cluster_option.kubernetes_versions), (length(data.oci_containerengine_cluster_option.cluster_option.kubernetes_versions) - 1))
   name               = "${var.name_prefix}-cluster-${random_id.random_id.dec}"
   vcn_id             = var.vcn_id
-  type = var.container["type"]
+  type = var.type
 
   # Optional
   cluster_pod_network_options {
       #Required
-      cni_type = var.container["cluster_cluster_pod_network_options_cni_type"]
+      cni_type = var.cluster_cluster_pod_network_options_cni_type
   }
   # defined_tags = {"Operations.CostCenter"= "42"}
   # freeform_tags = {"Department"= "Finance"}
 
   endpoint_config {
       #Optional
-      is_public_ip_enabled = var.container["cluster_endpoint_config_is_public_ip_enabled"]
-      # nsg_ids = var.container["cluster_endpoint_config_nsg_ids"] # for Network Security Group
+      is_public_ip_enabled = var.cluster_endpoint_config_is_public_ip_enabled
+      # nsg_ids = var.cluster_endpoint_config_nsg_ids # for Network Security Group
       subnet_id = var.api_endpoint_public_subnet_ocid
   }
 
@@ -28,8 +28,8 @@ resource "oci_containerengine_cluster" "cluster" {
     # Optional
     add_ons {
       #Optional
-      is_kubernetes_dashboard_enabled = var.container["is_kubernetes_dashboard_enabled"]
-      is_tiller_enabled = var.container["is_tiller_enabled"]
+      is_kubernetes_dashboard_enabled = var.is_kubernetes_dashboard_enabled
+      is_tiller_enabled = var.is_tiller_enabled
     }
 
     # Optional
@@ -63,7 +63,7 @@ resource "oci_containerengine_node_pool" "node_pool" {
       # fault_domains
       # preemptible_node_config
     }
-    size = var.container["num_nodes"]
+    size = var.num_nodes
 
     # Optional
     # is_pv_encryption_in_transit_enabled
@@ -75,11 +75,11 @@ resource "oci_containerengine_node_pool" "node_pool" {
     # }
   }
 
-  node_shape      = var.container["node_shape"]
+  node_shape      = var.node_shape
   node_shape_config {
       #Optional
-      memory_in_gbs = var.container["node_pool_node_shape_config_memory_in_gbs"]
-      ocpus = var.container["node_pool_node_shape_config_ocpus"]
+      memory_in_gbs = var.node_pool_node_shape_config_memory_in_gbs
+      ocpus = var.node_pool_node_shape_config_ocpus
   }
 
   node_source_details {
@@ -88,7 +88,7 @@ resource "oci_containerengine_node_pool" "node_pool" {
       source_type = "IMAGE"
 
       #Optional
-      boot_volume_size_in_gbs = var.container["node_pool_node_source_details_boot_volume_size_in_gbs"]
+      boot_volume_size_in_gbs = var.node_pool_node_source_details_boot_volume_size_in_gbs
   }
 
   node_metadata = { user_data: base64encode(data.local_file.cloud_init.content) }

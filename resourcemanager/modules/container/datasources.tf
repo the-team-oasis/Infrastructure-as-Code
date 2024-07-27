@@ -6,8 +6,7 @@ data "oci_containerengine_cluster_kube_config" "cluster_kube_config" {
   cluster_id = "${oci_containerengine_cluster.cluster.id}"
 
   #Optional
-  expiration    = "${var.container["kubecfg_expiration"]}"
-  token_version = "${var.container["kubecfg_token_version"]}"
+  token_version = var.kubecfg_token_version
 }
 
 data "oci_containerengine_clusters" "clusters" {

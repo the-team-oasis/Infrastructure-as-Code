@@ -1,0 +1,156 @@
+title: "Resource Manager Example OKE"
+description: "Resource Manager로 OKE Cluster와 Cloud Init Script를 활용하는 Node Pool을 생성 예제입니다."
+schemaVersion: 1.0.0
+version: "20240724"
+locale: "en"
+variableGroups:
+  - title: "Hidden"
+    visible: false
+    variables:
+      - api_fingerprint
+      - current_user_ocid
+      - tenancy_ocid
+      - region
+      - vcn_id
+      - freeform_tags
+  - title: "Basic Configuration"
+    variables:
+      - compartment_ocid
+      - availability_domain
+      - name_prefix
+  - title: "Cluster Configuration"
+    variables:
+      - type
+      - cluster_cluster_pod_network_options_cni_type
+      - cluster_endpoint_config_is_public_ip_enabled
+      - is_kubernetes_dashboard_enabled
+      - is_tiller_enabled
+      - node_shape
+      - node_pool_node_shape_config_memory_in_gbs
+      - node_pool_node_shape_config_ocpus
+      - node_pool_node_source_details_boot_volume_size_in_gbs
+      - num_nodes
+      - kubecfg_token_version
+variables:
+  api_fingerprint:
+    required: false
+    visible: false
+  current_user_ocid:
+    title: User
+    type: ocid
+    required: true
+  tenancy_ocid:
+    title: Tenancy
+    type: oci:identity:compartment:id
+    required: true
+  compartment_ocid:
+    title: Compartment
+    description: The default compartment for created resources.
+    type: oci:identity:compartment:id
+    required: true
+  region:
+    required: true
+    title: Region
+    type: oci:identity:region:name
+  availability_domain:
+    title: Availability domain
+    type: oci:identity:availabilitydomain:name
+    required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  freeform_tags:
+    type: string
+    visible: false
+    required: false
+  name_prefix:
+    type: string
+    title: Name Prefix
+    required: true
+    description: "OKE Cluster 이름의 앞 Prefix를 설정합니다. Prefix는 문자 혹은 숫자여야 하며, 첫 글자는 문자여야 합니다." 
+    default: "myocitf"
+  vcn_id:
+    type: string
+    required: true
+  type:
+    title: Cluster Type
+    description: 
+    type: enum
+    required: true
+    enum:
+    - BASIC_CLUSTER
+    - ENHANCED_CLUSTER
+    default: BASIC_CLUSTER
+  cluster_cluster_pod_network_options_cni_type:
+    title: Network type
+    description: 
+    type: enum
+    required: true
+    enum:
+    - FLANNEL_OVERLAY
+    - OCI_VCN_IP_NATIVE
+    default: FLANNEL_OVERLAY
+  cluster_endpoint_config_is_public_ip_enabled:
+    title: Assign a public IP address to the API endpoint
+    description: 
+    type: boolean
+    required: true
+    default: true
+  is_kubernetes_dashboard_enabled:
+    title: Enable Kubernetes Dashboard
+    description: 
+    type: boolean
+    required: true
+    default: false
+  is_tiller_enabled:
+    title: Enable Tile
+    description: 
+    type: boolean
+    required: true
+    default: false
+  node_shape:
+    title: Pod shape
+    description: 
+    type: enum
+    required: true
+    enum:
+    - VM.Standard.E3.Flex
+    - VM.Standard.E4.Flex
+    - VM.Standard.E5.Flex
+    - VM.Standard3.Flex
+    default: VM.Standard.E4.Flex
+  node_pool_node_shape_config_ocpus:
+    title: The number of OCPUs
+    description: 
+    type: integer
+    required: true
+    minimum: 1
+    maximum: 100
+    default: 1
+  node_pool_node_shape_config_memory_in_gbs:
+    title: Amount of memory (GB)
+    description: 
+    type: integer
+    required: true
+    minimum: 1
+    maximum: 1500
+    default: 16
+  node_pool_node_source_details_boot_volume_size_in_gbs:
+    title: Specify a custom boot volume size
+    description: 
+    type: integer
+    required: true
+    minimum: 50
+    maximum: 32768
+    default: 50
+  num_nodes:
+    title: Node count
+    description: 
+    type: integer
+    required: true
+    minimum: 1
+    maximum: 999
+    default: 1
+  kubecfg_token_version:
+    title: Kubernetes Config Token Version
+    type: string
+    default: 2.0.0
